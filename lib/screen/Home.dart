@@ -13,7 +13,7 @@ class _HomePageState extends State<HomePage>
   List users = [
     {"nom": 'koulibaly', 'image': "assets/images/avatar.jpg", 'status': true},
     {"nom": 'Diaby', 'image': "assets/images/avatar2.jpg", 'status': true},
-    {"nom": 'youla', 'image': "assets/images/avatar3.jpg", 'status': true},
+    {"nom": 'youla', 'image': "assets/images/avatar3.jpg", 'status': false},
     {"nom": 'diallo', 'image': "assets/images/avatar.jpg", 'status': true},
     {"nom": 'diallo', 'image': "assets/images/avatar.jpg", 'status': true}
   ];
@@ -94,7 +94,31 @@ Widget createavatar({required Map user}) {
             CircleAvatar(
               radius: 40,
               backgroundImage: AssetImage(user['image']),
-            )
+            ),
+            user["status"]
+                ? Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: Container(
+                      height: 22,
+                      width: 22,
+                      decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.all(Radius.circular(20))),
+                    ))
+                : const SizedBox(),
+            user["status"]
+                ? Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: Container(
+                      height: 20,
+                      width: 20,
+                      decoration: BoxDecoration(
+                          color: Colors.green,
+                          borderRadius: BorderRadius.all(Radius.circular(20))),
+                    ))
+                : const SizedBox()
           ]),
         ),
         Text(user["nom"], style: TextStyle(color: Colors.white, fontSize: 18))
