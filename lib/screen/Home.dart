@@ -19,11 +19,32 @@ class _HomePageState extends State<HomePage>
   ];
   TextEditingController textController =
       TextEditingController(); // Ajout du contrôleur de texte
-
+  List messages = [];
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this);
+
+    messages = [
+      {
+        'user': users[0],
+        'message': "Félicitations ",
+        'heure': "16:12",
+        'status': 1
+      },
+      {
+        'user': users[1],
+        'message': "bonjour a tout le monde ",
+        'heure': "16:12",
+        'status': 4
+      },
+      {
+        'user': users[2],
+        'message': "hellow world ",
+        'heure': "16:12",
+        'status': 5
+      },
+    ];
   }
 
   @override
@@ -68,6 +89,7 @@ class _HomePageState extends State<HomePage>
       ),
       body: SingleChildScrollView(
           child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             height: 150,
@@ -77,11 +99,62 @@ class _HomePageState extends State<HomePage>
                 return createavatar(user: users[index]);
               }),
             ),
+          ),
+          const Padding(
+            padding: EdgeInsets.all(10),
+            child: Text(
+              "Messages",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          ListView(
+            shrinkWrap: true,
+            children: List.generate(messages.length, (index) {
+              return createmessage(message: messages[index]);
+            }),
           )
         ],
       )),
     );
   }
+}
+
+Widget createmessage({required Map message}) {
+  return Padding(
+    padding: EdgeInsets.only(bottom: 5, left: 8, right: 8),
+    child: ListTile(
+      textColor: const Color.fromARGB(255, 222, 208, 208),
+      title: Text(message['user']['nom'],
+          style: TextStyle(fontWeight: FontWeight.bold)),
+      subtitle:
+          Text(message['message'], style: TextStyle(color: Colors.white38)),
+      leading: CircleAvatar(
+        radius: 30,
+        backgroundImage: AssetImage(message['user']['image']),
+      ),
+      trailing: Column(
+        children: [
+          Text(message['heure']),
+          SizedBox(
+            height: 4,
+          ),
+          Container(
+            height: 20,
+            width: 20,
+            decoration: BoxDecoration(
+                color: HexColor("#301c70"),
+                borderRadius: BorderRadius.all(Radius.circular(15))),
+            child: Center(
+              child: Text(message["status"].toString()),
+            ),
+          )
+        ],
+      ),
+    ),
+  );
 }
 
 Widget createavatar({required Map user}) {
@@ -121,7 +194,9 @@ Widget createavatar({required Map user}) {
                 : const SizedBox()
           ]),
         ),
-        Text(user["nom"], style: TextStyle(color: Colors.white, fontSize: 18))
+        Text(user["nom"],
+            style: TextStyle(
+                color: Color.fromARGB(255, 175, 148, 148), fontSize: 18))
       ]));
 }
 
