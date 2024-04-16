@@ -10,10 +10,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  List<Map<String, dynamic>> users = [
+  List users = [
     {"nom": 'koulibaly', 'image': "assets/images/avatar.jpg", 'status': true},
     {"nom": 'Diaby', 'image': "assets/images/avatar2.jpg", 'status': true},
     {"nom": 'youla', 'image': "assets/images/avatar3.jpg", 'status': true},
+    {"nom": 'diallo', 'image': "assets/images/avatar.jpg", 'status': true},
     {"nom": 'diallo', 'image': "assets/images/avatar.jpg", 'status': true}
   ];
   TextEditingController textController =
@@ -65,21 +66,41 @@ class _HomePageState extends State<HomePage>
           backgroundImage: AssetImage("assets/images/avatar.jpg"),
         ),
       ),
-      body: SingleChildScrollView(child:Column(children: [
-        Container(
-          width: 100,
-          child: ListView(scrollDirection: Axis.horizontal,children: List.generate(users.length, (index){
-           return createavatar(user: users[index]) ;
-          }),),
-        )
-      ],)),
+      body: SingleChildScrollView(
+          child: Column(
+        children: [
+          Container(
+            height: 150,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: List.generate(users.length, (index) {
+                return createavatar(user: users[index]);
+              }),
+            ),
+          )
+        ],
+      )),
     );
-    
   }
 }
-Widget createavatar({required Map user}){
-  return Padding(padding: EdgeInsets.)
+
+Widget createavatar({required Map user}) {
+  return Padding(
+      padding: EdgeInsets.all(10),
+      child: Column(children: [
+        Padding(
+          padding: EdgeInsets.all(5),
+          child: Stack(children: [
+            CircleAvatar(
+              radius: 40,
+              backgroundImage: AssetImage(user['image']),
+            )
+          ]),
+        ),
+        Text(user["nom"], style: TextStyle(color: Colors.white, fontSize: 18))
+      ]));
 }
+
 class HexColor extends Color {
   static int _getColorFromHex(String hexColor) {
     hexColor = hexColor.toUpperCase().replaceAll("#", "");
