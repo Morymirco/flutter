@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+//on install le package avec flutter pub add get
 class MessagePage extends StatefulWidget {
   const MessagePage({super.key});
 

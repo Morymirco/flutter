@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+//on install le package avec flutter pub add get
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 

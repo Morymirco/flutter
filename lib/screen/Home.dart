@@ -1,5 +1,8 @@
+import 'package:appchat/screen/message.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
+//on install le package avec flutter pub add get
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -54,16 +57,22 @@ class _HomePageState extends State<HomePage>
     super.dispose();
   }
 
+// on declare la variable avant la class build
   double fontSize = 20;
   @override
   Widget build(BuildContext context) {
+    // scaffold pour cender la fenetre en deux parties appbar et body(page)
     return Scaffold(
       backgroundColor: HexColor("#12141D"),
       appBar: AppBar(
         backgroundColor: Colors.white12,
+        // pour enlever le hr(ligne) par default de appbar
         elevation: 0,
+        //la hauteur
         toolbarHeight: 69,
+        // La propriété actions de AppBar en Flutter permet d'ajouter des actions à droite de la barre d'applications. Ces actions sont généralement des icônes ou des widgets interactifs qui effectuent des actions spécifiques lorsqu'ils sont appuyés.
         actions: [
+          
           Padding(
             padding: EdgeInsets.all(5),
             child: Container(
@@ -82,11 +91,14 @@ class _HomePageState extends State<HomePage>
             ),
           )
         ],
+        // pour centrer le titre de la appnav
         centerTitle: true,
         title: Text(
           "Genius class",
           style: TextStyle(fontSize: 22),
         ),
+        // La propriété leading de AppBar en Flutter permet d'ajouter un widget à gauche de la barre d'applications. Cela est souvent utilisé pour afficher un bouton de retour ou un widget interactif qui effectue une action lorsque l'utilisateur le touche.
+      // GestureDetector => gestionnaire d'evenement  
         leading: GestureDetector(
           onTap: () => {
             setState(() {
@@ -128,7 +140,13 @@ class _HomePageState extends State<HomePage>
           ListView(
             shrinkWrap: true,
             children: List.generate(messages.length, (index) {
-              return createmessage(message: messages[index]);
+              return GestureDetector(
+                child: createmessage(message: messages[index]),
+                onTap: () {
+                  print("Message");
+                  Get.to(() => MessagePage());
+                },
+              );
             }),
           )
         ],
