@@ -72,7 +72,6 @@ class _HomePageState extends State<HomePage>
         toolbarHeight: 69,
         // La propriété actions de AppBar en Flutter permet d'ajouter des actions à droite de la barre d'applications. Ces actions sont généralement des icônes ou des widgets interactifs qui effectuent des actions spécifiques lorsqu'ils sont appuyés.
         actions: [
-          
           Padding(
             padding: EdgeInsets.all(5),
             child: Container(
@@ -98,7 +97,7 @@ class _HomePageState extends State<HomePage>
           style: TextStyle(fontSize: 22),
         ),
         // La propriété leading de AppBar en Flutter permet d'ajouter un widget à gauche de la barre d'applications. Cela est souvent utilisé pour afficher un bouton de retour ou un widget interactif qui effectue une action lorsque l'utilisateur le touche.
-      // GestureDetector => gestionnaire d'evenement  
+        // GestureDetector => gestionnaire d'evenement
         leading: GestureDetector(
           onTap: () => {
             setState(() {
@@ -144,7 +143,10 @@ class _HomePageState extends State<HomePage>
                 child: createmessage(message: messages[index]),
                 onTap: () {
                   print("Message");
-                  Get.to(() => MessagePage());
+                  //Get.offAll => supprime toutes les pages precedents (sans retour possible)
+                  Get.to(() => MessagePage(message: messages[index],));
+                  // Get.off(() => MessagePage()); 
+                  // chargement sans possibilite de retour
                 },
               );
             }),
@@ -244,7 +246,6 @@ class HexColor extends Color {
 
   HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }
-
 
 // Padding(
 //         padding: const EdgeInsets.all(16.0),
