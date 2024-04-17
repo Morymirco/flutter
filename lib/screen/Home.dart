@@ -20,6 +20,7 @@ class _HomePageState extends State<HomePage>
   TextEditingController textController =
       TextEditingController(); // Ajout du contrôleur de texte
   List messages = [];
+
   @override
   void initState() {
     super.initState();
@@ -53,6 +54,7 @@ class _HomePageState extends State<HomePage>
     super.dispose();
   }
 
+  double fontSize = 20;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,10 +83,23 @@ class _HomePageState extends State<HomePage>
           )
         ],
         centerTitle: true,
-        title: Text("Genius class"),
-        leading: CircleAvatar(
-          radius: 30,
-          backgroundImage: AssetImage("assets/images/avatar.jpg"),
+        title: Text(
+          "Genius class",
+          style: TextStyle(fontSize: 22),
+        ),
+        leading: GestureDetector(
+          onTap: () => {
+            setState(() {
+              if (fontSize > 40) {
+                fontSize = 20;
+              }
+              fontSize = fontSize + 4;
+            }),
+          },
+          child: CircleAvatar(
+            radius: 30,
+            backgroundImage: AssetImage("assets/images/avatar.jpg"),
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -100,13 +115,13 @@ class _HomePageState extends State<HomePage>
               }),
             ),
           ),
-          const Padding(
+          Padding(
             padding: EdgeInsets.all(10),
             child: Text(
               "Messages",
               style: TextStyle(
                   color: Colors.white,
-                  fontSize: 22,
+                  fontSize: fontSize,
                   fontWeight: FontWeight.bold),
             ),
           ),
