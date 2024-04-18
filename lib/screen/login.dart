@@ -5,6 +5,9 @@ import 'package:getwidget/getwidget.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:dio/dio.dart' as dio;
+import 'package:get/route_manager.dart';
+import 'package:getwidget/getwidget.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -16,6 +19,20 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+
+  void login({required Map data}) async {
+    var dioClient = new dio.Dio();
+
+    try {
+      dio.Response response =
+          await dioClient.post("https://reqres.in/api/login", data: data);
+    } catch (e) {
+      Get.snackbar("Erreur", "Email ou mot de passe invalide",
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.red,
+          icon: Icon(Icons.error));
+    }
+  }
 
   @override
   void initState() {
@@ -127,6 +144,7 @@ class _LoginPageState extends State<LoginPage>
 
                           if (_formKey.currentState!.saveAndValidate()) {
                             print(_formKey.currentState!.value);
+                            login(data: _formKey.currentState!.value);
                           } else {
                             print("Error");
                           }
