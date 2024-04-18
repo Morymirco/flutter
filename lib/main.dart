@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       navigatorKey: Get.key,
       //pour enlever le badges de bug
       debugShowCheckedModeBanner: false,
-      home: const LoginPage(),
+      home: const HomePage(),
       title: "ODC App",
     );
   }
