@@ -1,6 +1,8 @@
 import 'package:appchat/screen/message.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:appchat/models/user.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 //on install le package avec flutter pub add get
 class HomePage extends StatefulWidget {
@@ -13,42 +15,57 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  List users = [
-    {"nom": 'koulibaly', 'image': "assets/images/avatar.jpg", 'status': true},
-    {"nom": 'Diaby', 'image': "assets/images/avatar2.jpg", 'status': true},
-    {"nom": 'youla', 'image': "assets/images/avatar3.jpg", 'status': false},
-    {"nom": 'diallo', 'image': "assets/images/avatar.jpg", 'status': true},
-    {"nom": 'diallo', 'image': "assets/images/avatar.jpg", 'status': true}
-  ];
+  // List users = [
+  //   {"nom": 'koulibaly', 'image': "assets/images/avatar.jpg", 'status': true},
+  //   {"nom": 'Diaby', 'image': "assets/images/avatar2.jpg", 'status': true},
+  //   {"nom": 'youla', 'image': "assets/images/avatar3.jpg", 'status': false},
+  //   {"nom": 'diallo', 'image': "assets/images/avatar.jpg", 'status': true},
+  //   {"nom": 'diallo', 'image': "assets/images/avatar.jpg", 'status': true}
+  // ];
+
+  List<User> users = [];
+
   TextEditingController textController =
       TextEditingController(); // Ajout du contrôleur de texte
   List messages = [];
+
+  int pageCount = 1;
+  PagingController<int, User> pagingController =
+      PagingController(firstPageKey: 1);
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this);
+    //la methode
 
-    messages = [
-      {
-        'user': users[0],
-        'message': "Félicitations ",
-        'heure': "16:12",
-        'status': 1
-      },
-      {
-        'user': users[1],
-        'message': "bonjour a tout le monde ",
-        'heure': "16:12",
-        'status': 4
-      },
-      {
-        'user': users[2],
-        'message': "hellow world ",
-        'heure': "16:12",
-        'status': 5
-      },
-    ];
+    // messages = [
+    //   {
+    //     'user': users[0],
+    //     'message': "Félicitations ",
+    //     'heure': "16:12",
+    //     'status': 1
+    //   },
+    //   {
+    //     'user': users[1],
+    //     'message': "bonjour a tout le monde ",
+    //     'heure': "16:12",
+    //     'status': 4
+    //   },
+    //   {
+    //     'user': users[2],
+    //     'message': "hellow world ",
+    //     'heure': "16:12",
+    //     'status': 5
+    //   },
+    // ];
+    pagingController.addPageRequestListener((pageKey) {
+      getUsersList(page: pageKey);
+    });
+  }
+
+  void getUsersList({int page = 1}) {
+    getUsers(page: page, pagingController: pagingController);
   }
 
   @override
@@ -79,8 +96,8 @@ class _HomePageState extends State<HomePage>
                 color: HexColor("#A855F7"),
                 borderRadius: BorderRadius.all(Radius.circular(40)),
               ),
-              height: 2,
-              width: 55,
+              height: 60,
+              width: 66,
               child: Center(
                 child: Icon(
                   Icons.add,
@@ -94,7 +111,7 @@ class _HomePageState extends State<HomePage>
         centerTitle: true,
         title: Text(
           "Genius class",
-          style: TextStyle(fontSize: 22),
+          style: TextStyle(fontSize: 22, color: Colors.white),
         ),
         // La propriété leading de AppBar en Flutter permet d'ajouter un widget à gauche de la barre d'applications. Cela est souvent utilisé pour afficher un bouton de retour ou un widget interactif qui effectue une action lorsque l'utilisateur le touche.
         // GestureDetector => gestionnaire d'evenement
@@ -119,10 +136,28 @@ class _HomePageState extends State<HomePage>
         children: [
           Container(
             height: 150,
-            child: ListView(
+            child: PagedListView(
               scrollDirection: Axis.horizontal,
-              children: List.generate(users.length, (index) {
-                return createavatar(user: users[index]);
+              pagingController: pagingController,
+              builderDelegate: PagedChildBuilderDelegate<User>(
+                  firstPageProgressIndicatorBuilder: (context) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 15,
+                      ),
+                      CircularProgressIndicator(
+                        backgroundColor: Colors.cyan,
+                      )
+                    ],
+                  ),
+                );
+              }, firstPageErrorIndicatorBuilder: (context) {
+                return Text("Error");
+              }, itemBuilder: (context, item, index) {
+                return createavatar(user: item);
               }),
             ),
           ),
@@ -144,8 +179,10 @@ class _HomePageState extends State<HomePage>
                 onTap: () {
                   print("Message");
                   //Get.offAll => supprime toutes les pages precedents (sans retour possible)
-                  Get.to(() => MessagePage(message: messages[index],));
-                  // Get.off(() => MessagePage()); 
+                  Get.to(() => MessagePage(
+                        message: messages[index],
+                      ));
+                  // Get.off(() => MessagePage());
                   // chargement sans possibilite de retour
                 },
               );
@@ -192,7 +229,7 @@ Widget createmessage({required Map message}) {
   );
 }
 
-Widget createavatar({required Map user}) {
+Widget createavatar({required User user}) {
   return Padding(
       padding: EdgeInsets.all(10),
       child: Column(children: [
@@ -201,9 +238,9 @@ Widget createavatar({required Map user}) {
           child: Stack(children: [
             CircleAvatar(
               radius: 40,
-              backgroundImage: AssetImage(user['image']),
+              backgroundImage: NetworkImage(user.image),
             ),
-            user["status"]
+            true
                 ? Positioned(
                     bottom: 0,
                     right: 0,
@@ -215,7 +252,7 @@ Widget createavatar({required Map user}) {
                           borderRadius: BorderRadius.all(Radius.circular(20))),
                     ))
                 : const SizedBox(),
-            user["status"]
+            true
                 ? Positioned(
                     bottom: 0,
                     right: 0,
@@ -229,7 +266,7 @@ Widget createavatar({required Map user}) {
                 : const SizedBox()
           ]),
         ),
-        Text(user["nom"],
+        Text("${user.firstName} ${user.lastName}",
             style: TextStyle(
                 color: Color.fromARGB(255, 175, 148, 148), fontSize: 18))
       ]));
