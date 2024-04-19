@@ -1,7 +1,11 @@
 import 'package:appchat/screen/message.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart';
 import 'package:appchat/models/user.dart';
+import 'package:getwidget/components/button/gf_button.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 //on install le package avec flutter pub add get
@@ -80,6 +84,86 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     // scaffold pour cender la fenetre en deux parties appbar et body(page)
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.phone),
+        backgroundColor: Colors.blue,
+        onPressed: () {
+          Get.bottomSheet(ListView(
+            shrinkWrap: true,
+            children: [
+              Container(
+                // height: 200,
+                height: MediaQuery.of(context).size.height / 1,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  color: Colors.white,
+                ),
+
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      ListTile(
+                        leading: CircleAvatar(
+                            backgroundColor: Colors.transparent,
+                            backgroundImage:
+                                AssetImage("assets/images/avatar.jpg")),
+                        title: Text("Ajout d'un utilisateur"),
+                        subtitle: Text("Formulaire d'enregistrement"),
+                      ),
+                      FormBuilder(
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.all(10),
+                              child: FormBuilderTextField(
+                                name: "prenom",
+                                decoration: InputDecoration(
+                                    labelText: "Prenom",
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(5))),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(10),
+                              child: FormBuilderTextField(
+                                name: "prenom",
+                                decoration: InputDecoration(
+                                    labelText: "Prenom",
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(5))),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(10),
+                              child: GFButton(
+                                text: 'sauvergarder',
+                                color: Colors.blueGrey,
+                                size: GFSize.LARGE,
+                                fullWidthButton: true,
+                                shape: GFButtonShape.pills,
+                                onPressed: () {},
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Center(
+                        child: GFButton(
+                          onPressed: () => Get.back(),
+                          child: Text("fermer"),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ));
+        },
+      ),
       backgroundColor: HexColor("#12141D"),
       appBar: AppBar(
         backgroundColor: Colors.white12,
