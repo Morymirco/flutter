@@ -15,13 +15,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  // List users = [
-  //   {"nom": 'koulibaly', 'image': "assets/images/avatar.jpg", 'status': true},
-  //   {"nom": 'Diaby', 'image': "assets/images/avatar2.jpg", 'status': true},
-  //   {"nom": 'youla', 'image': "assets/images/avatar3.jpg", 'status': false},
-  //   {"nom": 'diallo', 'image': "assets/images/avatar.jpg", 'status': true},
-  //   {"nom": 'diallo', 'image': "assets/images/avatar.jpg", 'status': true}
-  // ];
+  List userslocal = [
+    {"nom": 'koulibaly', 'image': "assets/images/avatar.jpg", 'status': true},
+    {"nom": 'Diaby', 'image': "assets/images/avatar2.jpg", 'status': true},
+    {"nom": 'youla', 'image': "assets/images/avatar3.jpg", 'status': false},
+    {"nom": 'diallo', 'image': "assets/images/avatar.jpg", 'status': true},
+    {"nom": 'diallo', 'image': "assets/images/avatar.jpg", 'status': true}
+  ];
 
   List<User> users = [];
 
@@ -39,26 +39,26 @@ class _HomePageState extends State<HomePage>
     _controller = AnimationController(vsync: this);
     //la methode
 
-    // messages = [
-    //   {
-    //     'user': users[0],
-    //     'message': "Félicitations ",
-    //     'heure': "16:12",
-    //     'status': 1
-    //   },
-    //   {
-    //     'user': users[1],
-    //     'message': "bonjour a tout le monde ",
-    //     'heure': "16:12",
-    //     'status': 4
-    //   },
-    //   {
-    //     'user': users[2],
-    //     'message': "hellow world ",
-    //     'heure': "16:12",
-    //     'status': 5
-    //   },
-    // ];
+    messages = [
+      {
+        'user': userslocal[0],
+        'message': "Félicitations ",
+        'heure': "16:12",
+        'status': 1
+      },
+      {
+        'user': userslocal[1],
+        'message': "bonjour a tout le monde ",
+        'heure': "16:12",
+        'status': 4
+      },
+      {
+        'user': userslocal[2],
+        'message': "hellow world ",
+        'heure': "16:12",
+        'status': 5
+      },
+    ];
     pagingController.addPageRequestListener((pageKey) {
       getUsersList(page: pageKey);
     });
