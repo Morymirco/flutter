@@ -8,6 +8,7 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:get/route_manager.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:sn_progress_dialog/progress_dialog.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -22,11 +23,19 @@ class _LoginPageState extends State<LoginPage>
 
   void login({required Map data}) async {
     var dioClient = new dio.Dio();
-
+    ProgressDialog dialog = ProgressDialog(context: context);
+    dialog.show(
+      max: 100,
+      msg: "laoding ...",
+      progressBgColor: Colors.transparent,
+    );
+    // await dialog.show();
     try {
       dio.Response response =
           await dioClient.post("https://reqres.in/api/login", data: data);
+      dialog.close();
     } catch (e) {
+      dialog.close();
       Get.snackbar("Erreur", "Email ou mot de passe invalide",
           snackPosition: SnackPosition.TOP,
           backgroundColor: Colors.red,
